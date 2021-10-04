@@ -1,7 +1,7 @@
 {
   "name": "node-sso",
   "version": "1.0.0",
-  "description": "One stop solution for handling comprehensive number of node SSO",
+  "description": "One-stop solution for handling a comprehensive number of node SSO",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
