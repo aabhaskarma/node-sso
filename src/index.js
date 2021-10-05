@@ -8,11 +8,13 @@ const SSO_TYPE_TO_HANDLER_MAP = {
 	[AUTH_TYPES.APPLE]: './service/apple/handler'
 };
 
-
 class NodeSSO {
 	constructor(ssoType, config) {
 		this._ssoType = ssoType;
 		this._config = config;
+		this._clientId = config.clientId;
+		this._clientSecret = config.clientSecret;
+		this._redirectUri = config.redirectURI;
 
 		if (!Object.values(SSO_TYPES).includes(this._ssoType)) {
 			throw new BadRequestException('Invalid SSO Type');
