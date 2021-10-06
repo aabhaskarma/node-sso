@@ -16,31 +16,31 @@ class FacebookSSO extends SSOHandler {
 
     // combination of acquireToken and getUserInfo
     async login(authCode, config) {
-      const token = await this.acquireToken(authCode, config);
-      const userInfo = await this.getUserInfo(token.access_token);
+        const token = await this.acquireToken(authCode, config);
+        const userInfo = await this.getUserInfo(token.access_token);
 
-      return {
-          firstname: userInfo.name.split(' ')[0],
-          lastname: userInfo.name.split(' ')[1],
-          email: userInfo.email,
-          picture: userInfo.picture.data.url,
-          token,
-          userInfo
-      };
-  }  
+        return {
+            firstname: userInfo.name.split(' ')[0],
+            lastname: userInfo.name.split(' ')[1],
+            email: userInfo.email,
+            picture: userInfo.picture.data.url,
+            token,
+            userInfo
+        };
+    }
 
     generateAuthorizationUrl(config = {}) {
-      const params = {
-          redirect_uri: config.redirectUri || this._redirectUri,
-          client_id: config.clientId || this._clientId,
-          response_type: config.responseType || 'code',
-          scope: config.scope || 'public_profile,email',
-          display: config.display || 'popup',
-          auth_type: config.authType || 'rerequest',
-      };
+        const params = {
+            redirect_uri: config.redirectUri || this._redirectUri,
+            client_id: config.clientId || this._clientId,
+            response_type: config.responseType || 'code',
+            scope: config.scope || 'public_profile,email',
+            display: config.display || 'popup',
+            auth_type: config.authType || 'rerequest',
+        };
 
-      return `${AUTHORIZATION_URL}?${new URLSearchParams(params)}`;
-  }
+        return `${AUTHORIZATION_URL}?${new URLSearchParams(params)}`;
+    }
 
     acquireToken(authCode, config) {
         const params = {
@@ -56,19 +56,22 @@ class FacebookSSO extends SSOHandler {
             .then((res) => res.data);
     }
 
+    refreshToken() {
+        throw ValidationException('Facebook refresh method not available yet');
+    }
+
     async getUserInfo(accessToken) {
-      const config = {
-          params: {
-              access_token: accessToken,
-              fields: ['email', 'name', 'picture.width(500).height(500)'].join(','), // https://stackoverflow.com/a/21162489
-              type: 'normal'
-          }
-      };
+        const config = {
+            params: {
+                access_token: accessToken,
+                fields: ['email', 'name', 'picture.width(500).height(500)'].join(','), // https://stackoverflow.com/a/21162489
+                type: 'normal'
+            }
+        };
 
-      return axios.get(USER_INFO_URL, config)
-          .then((res) => res.data);
-  }
-
+        return axios.get(USER_INFO_URL, config)
+            .then((res) => res.data);
+    }
 }
 
 module.exports = FacebookSSO;
