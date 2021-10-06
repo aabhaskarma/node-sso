@@ -1,5 +1,6 @@
 const axios = require('axios');
 const SSOHandler = require('../contracts/ssoHandler');
+const { ValidationException } = require('../../exceptions/http.exception');
 
 const AUTHORIZATION_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';
@@ -12,7 +13,7 @@ class GoogleSSO extends SSOHandler {
     this._clientSecret = config.clientSecret;
     this._redirectUri = config.redirectURI;
   }
-  
+
   acquireToken(authCode, config) {
     const params = {
         code: authCode,
@@ -69,6 +70,10 @@ class GoogleSSO extends SSOHandler {
 
     return `${AUTHORIZATION_URL}?${new URLSearchParams(params)}`;
   }
+
+  refreshToken() {
+    throw ValidationException('Google refresh method not implemented yet');
+}
 }
 
 module.exports = GoogleSSO;
