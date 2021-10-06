@@ -14,6 +14,21 @@ class FacebookSSO extends SSOHandler {
         this._redirectUri = config.redirectURI;
     }
 
+    // combination of acquireToken and getUserInfo
+    async login(authCode, config) {
+      const token = await this.acquireToken(authCode, config);
+      const userInfo = await this.getUserInfo(token.access_token);
+
+      return {
+          firstname: userInfo.name.split(' ')[0],
+          lastname: userInfo.name.split(' ')[1],
+          email: userInfo.email,
+          picture: userInfo.picture.data.url,
+          token,
+          userInfo
+      };
+  }  
+
     generateAuthorizationUrl(config = {}) {
       const params = {
           redirect_uri: config.redirectUri || this._redirectUri,
