@@ -2,6 +2,7 @@ const axios = require('axios');
 const { ValidationException } = require('../../exceptions/http.exception');
 const SSOHandler = require('../contracts/ssoHandler');
 
+const AUTHORIZATION_URL = 'https://www.facebook.com/v4.0/dialog/oauth';
 const TOKEN_URL = 'https://graph.facebook.com/v4.0/oauth/access_token';
 const USER_INFO_URL = 'https://graph.facebook.com/me';
 
@@ -12,6 +13,19 @@ class FacebookSSO extends SSOHandler {
         this._clientSecret = config.clientSecret;
         this._redirectUri = config.redirectURI;
     }
+
+    generateAuthorizationUrl(config = {}) {
+      const params = {
+          redirect_uri: config.redirectUri || this._redirectUri,
+          client_id: config.clientId || this._clientId,
+          response_type: config.responseType || 'code',
+          scope: config.scope || 'public_profile,email',
+          display: config.display || 'popup',
+          auth_type: config.authType || 'rerequest',
+      };
+
+      return `${AUTHORIZATION_URL}?${new URLSearchParams(params)}`;
+  }
 
     acquireToken(authCode, config) {
         const params = {
