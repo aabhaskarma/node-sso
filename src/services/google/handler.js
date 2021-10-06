@@ -53,10 +53,6 @@ class GoogleSSO extends SSOHandler {
         token,
         userInfo
     };
-
-    refreshToken() {
-      throw ValidationException('Google refresh method not implemented yet');
-  }
   }
 
   generateAuthorizationUrl(config = {}) {
@@ -74,6 +70,10 @@ class GoogleSSO extends SSOHandler {
 
     return `${AUTHORIZATION_URL}?${new URLSearchParams(params)}`;
   }
+
+  refreshToken() {
+    throw ValidationException('Google refresh method not implemented yet');
+}
 }
 
 module.exports = GoogleSSO;
