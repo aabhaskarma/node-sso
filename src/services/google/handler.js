@@ -32,6 +32,21 @@ class GoogleSSO extends SSOHandler {
     return axios.get(USER_INFO_URL, config)
         .then((res) => res.data);
   }
+
+  // combination of acquireToken and getUserInfo
+  async login(authCode, config) {
+    const token = await this.acquireToken(authCode, config);
+    const userInfo = await this.getUserInfo(token.access_token);
+
+    return {
+        firstname: userInfo.given_name,
+        lastname: userInfo.family_name,
+        email: userInfo.email,
+        picture: userInfo.picture.replace('=s96-c', '=s500'), // https://developers.google.com/people/image-sizing
+        token,
+        userInfo
+    };
+  }
 }
 
 module.exports = GoogleSSO;
