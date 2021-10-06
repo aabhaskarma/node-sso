@@ -3,6 +3,7 @@ const { ValidationException } = require('../../exceptions/http.exception');
 const SSOHandler = require('../contracts/ssoHandler');
 
 const TOKEN_URL = 'https://graph.facebook.com/v4.0/oauth/access_token';
+const USER_INFO_URL = 'https://graph.facebook.com/me';
 
 class FacebookSSO extends SSOHandler {
     constructor(config) {
@@ -25,6 +26,19 @@ class FacebookSSO extends SSOHandler {
         })
             .then((res) => res.data);
     }
+
+    async getUserInfo(accessToken) {
+      const config = {
+          params: {
+              access_token: accessToken,
+              fields: ['email', 'name', 'picture.width(500).height(500)'].join(','), // https://stackoverflow.com/a/21162489
+              type: 'normal'
+          }
+      };
+
+      return axios.get(USER_INFO_URL, config)
+          .then((res) => res.data);
+  }
 
 }
 
