@@ -20,7 +20,18 @@ class GoogleSSO extends SSOHandler {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
         .then((res) => res.data);
-}
+  }
+
+  async getUserInfo(accessToken) {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        }
+    };
+
+    return axios.get(USER_INFO_URL, config)
+        .then((res) => res.data);
+  }
 }
 
 module.exports = GoogleSSO;
