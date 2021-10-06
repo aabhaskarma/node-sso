@@ -47,6 +47,22 @@ class GoogleSSO extends SSOHandler {
         userInfo
     };
   }
+
+  generateAuthorizationUrl(config = {}) {
+    const params = {
+        redirect_uri: config.redirectUri || this._redirectUri,
+        client_id: config.clientId || this._clientId,
+        response_type: config.responseType || 'code',
+        scope: config.scope || [
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/userinfo.email',
+        ].join(' '),
+        auth_type: config.authType || 'offline',
+        prompt: config.prompt || 'consent',
+    };
+
+    return `${AUTHORIZATION_URL}?${new URLSearchParams(params)}`;
+  }
 }
 
 module.exports = GoogleSSO;
