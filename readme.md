@@ -40,3 +40,14 @@ This method will acquire necessary access token from SSO service and fetch user 
   //     userInfo
   // };
 ```
+
+If you want to acquire token explicitly
+```js
+ const token = nodeSSO.acquireToken(code, config);
+```
+
+If you want to fetch user info explicitly
+```js
+ const userInfo = nodeSSO.getUserInfo(accessToken);
+```
+
