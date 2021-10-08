@@ -5,7 +5,7 @@ const SSO_TYPE_TO_HANDLER_MAP = {
 	[AUTH_TYPES.GOOGLE]: './service/google/handler',
 	[AUTH_TYPES.FACEBOOK]: './service/facebook/handler',
 	[AUTH_TYPES.LINKEDIN]: './service/linkedin/handler',
-	[AUTH_TYPES.APPLE]: './service/apple/handler'
+//  	[AUTH_TYPES.APPLE]: './service/apple/handler'
 };
 
 class NodeSSO {
